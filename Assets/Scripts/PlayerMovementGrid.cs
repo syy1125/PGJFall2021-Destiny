@@ -20,6 +20,7 @@ public struct PlayerToken
 public class PlayerMovementGrid : MonoBehaviour
 {
 	public AnimationCurve MoveCurve;
+	public AnimationCurve FailedMoveCurve;
 	public float MoveTime = 0.2f;
 	public float MoveCooldown = 0.05f;
 	public PlayerToken[] Players;
@@ -66,7 +67,7 @@ public class PlayerMovementGrid : MonoBehaviour
 				if (_moveCoroutines[i] != null) continue;
 
 				Vector2 move = new Vector2(
-					Input.GetAxis(Players[i].HorizontalAxis), Input.GetAxis(Players[i].VerticalAxis)
+					Input.GetAxisRaw(Players[i].HorizontalAxis), Input.GetAxisRaw(Players[i].VerticalAxis)
 				);
 
 				Vector2Int target = Players[i].Position;
@@ -80,10 +81,18 @@ public class PlayerMovementGrid : MonoBehaviour
 					target += new Vector2Int(0, move.y > 0 ? 1 : -1);
 				}
 
-				if (target != Players[i].Position && IsValidTarget(target))
+				if (target != Players[i].Position)
 				{
-					_moveCoroutines[i] = StartCoroutine(MovePlayerVisual(i, Players[i].Position, target));
-					Players[i].Position = target;
+					if (IsValidTarget(target))
+					{
+						_moveCoroutines[i] =
+							StartCoroutine(MovePlayerVisual(i, Players[i].Position, target));
+						Players[i].Position = target;
+					}
+					else
+					{
+						_moveCoroutines[i] = StartCoroutine(FailedMoveVisual(i, Players[i].Position, target));
+					}
 				}
 			}
 
@@ -117,6 +126,27 @@ public class PlayerMovementGrid : MonoBehaviour
 		}
 
 		Players[index].PlayerTransform.localPosition = new Vector3(toPosition.x, toPosition.y);
+
+		yield return new WaitForSeconds(MoveCooldown);
+
+		_moveCoroutines[index] = null;
+	}
+
+	private IEnumerator FailedMoveVisual(int index, Vector2Int fromPosition, Vector2Int toPosition)
+	{
+		float startTime = Time.time;
+		float endTime = startTime + MoveTime;
+
+		while (Time.time < endTime)
+		{
+			Players[index].PlayerTransform.localPosition = Vector2.Lerp(
+				fromPosition, toPosition,
+				FailedMoveCurve.Evaluate(Mathf.InverseLerp(startTime, endTime, Time.time))
+			);
+			yield return null;
+		}
+
+		Players[index].PlayerTransform.localPosition = new Vector3(fromPosition.x, fromPosition.y);
 
 		yield return new WaitForSeconds(MoveCooldown);
 
