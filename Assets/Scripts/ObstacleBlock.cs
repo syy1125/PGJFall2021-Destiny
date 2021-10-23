@@ -7,7 +7,6 @@ public class ObstacleBlock : MonoBehaviour
 	public Vector2Int RootPosition;
 	public List<Vector2Int> BlockedPositions = new List<Vector2Int>(new[] { Vector2Int.zero });
 	public bool Draggable = true;
-	public float MoveTime = 0.1f;
 
 	private ObstacleGrid _grid;
 	private Vector3 _velocity;
@@ -26,7 +25,7 @@ public class ObstacleBlock : MonoBehaviour
 		}
 
 		transform.localPosition = Vector3.SmoothDamp(
-			transform.localPosition, new Vector3(RootPosition.x, RootPosition.y), ref _velocity, MoveTime
+			transform.localPosition, new Vector3(RootPosition.x, RootPosition.y), ref _velocity, _grid.DragMoveTime
 		);
 	}
 

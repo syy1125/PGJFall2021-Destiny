@@ -11,18 +11,11 @@ public enum DragState
 	Vertical
 }
 
-public struct DragExtent
-{
-	public int Left;
-	public int Right;
-	public int Up;
-	public int Down;
-}
-
 public class ObstacleGrid : MonoBehaviour
 {
 	public Vector2Int BoundsMin;
 	public Vector2Int BoundsMax;
+	public float DragMoveTime = 0.1f;
 
 	private List<ObstacleBlock> _blocks;
 
@@ -31,8 +24,8 @@ public class ObstacleGrid : MonoBehaviour
 	private ObstacleBlock _dragBlock;
 	private Vector2Int _dragStart; // The mouse position where the drag started.
 	private Vector2Int _dragHandle; // The mouse position relative to the block's root position.
-	private DragExtent
-		_dragExtent; // Determines how far the block can go in any particular direction. Computed at drag start.
+	private int _dragExtentMin;
+	private int _dragExtentMax;
 
 	private void Awake()
 	{
@@ -83,10 +76,9 @@ public class ObstacleGrid : MonoBehaviour
 
 				break;
 			case DragState.Horizontal:
-				TryDragBlockTo(new Vector2Int(mousePosition.x, _dragStart.y));
-				break;
 			case DragState.Vertical:
-				TryDragBlockTo(new Vector2Int(_dragStart.x, mousePosition.y));
+				ComputeDragExtents();
+				UseDragTarget(mousePosition);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
@@ -100,43 +92,67 @@ public class ObstacleGrid : MonoBehaviour
 		);
 	}
 
-	private void TryDragBlockTo(Vector2Int anchor)
+	private void UseDragTarget(Vector2Int anchor)
 	{
 		Vector2Int targetRootPosition = anchor - _dragHandle;
-		Vector2Int offset = targetRootPosition - _dragBlock.RootPosition;
 
-		// For the drag to be valid, all intermediate positions must be clear
-		Debug.Assert(offset.x == 0 || offset.y == 0, "At least one offset axis must be zero");
-		if (offset.x > 0)
+		switch (_dragState)
 		{
-			for (int x = 1; x <= offset.x; x++)
-			{
-				if (!IsDropTargetClear(_dragBlock.RootPosition + new Vector2Int(x, 0))) return;
-			}
+			case DragState.Horizontal:
+				_dragBlock.RootPosition = new Vector2Int(
+					Mathf.Clamp(targetRootPosition.x, _dragExtentMin, _dragExtentMax), _dragBlock.RootPosition.y
+				);
+				break;
+			case DragState.Vertical:
+				_dragBlock.RootPosition = new Vector2Int(
+					_dragBlock.RootPosition.x, Mathf.Clamp(targetRootPosition.y, _dragExtentMin, _dragExtentMax)
+				);
+				break;
+			default:
+				Debug.LogError(
+					$"UseDragTarget called with drag state {_dragState}. It should only be called when the direction of drag has been determined."
+				);
+				break;
 		}
-		else if (offset.x < 0)
+	}
+
+	private void ComputeDragExtents()
+	{
+		switch (_dragState)
 		{
-			for (int x = -1; x >= offset.x; x--)
-			{
-				if (!IsDropTargetClear(_dragBlock.RootPosition + new Vector2Int(x, 0))) return;
-			}
-		}
-		else if (offset.y > 0)
-		{
-			for (int y = 1; y <= offset.y; y++)
-			{
-				if (!IsDropTargetClear(_dragBlock.RootPosition + new Vector2Int(0, y))) return;
-			}
-		}
-		else // offset.y < 0
-		{
-			for (int y = -1; y >= offset.y; y--)
-			{
-				if (!IsDropTargetClear(_dragBlock.RootPosition + new Vector2Int(0, y))) return;
-			}
+			case DragState.Horizontal:
+				for (_dragExtentMin = _dragBlock.RootPosition.x - 1; _dragExtentMin >= BoundsMin.x; _dragExtentMin--)
+				{
+					if (!IsDropTargetClear(new Vector2Int(_dragExtentMin, _dragBlock.RootPosition.y))) break;
+				}
+
+				for (_dragExtentMax = _dragBlock.RootPosition.x + 1; _dragExtentMax <= BoundsMax.x; _dragExtentMax++)
+				{
+					if (!IsDropTargetClear(new Vector2Int(_dragExtentMax, _dragBlock.RootPosition.y))) break;
+				}
+
+				break;
+			case DragState.Vertical:
+				for (_dragExtentMin = _dragBlock.RootPosition.y - 1; _dragExtentMin >= BoundsMin.y; _dragExtentMin--)
+				{
+					if (!IsDropTargetClear(new Vector2Int(_dragBlock.RootPosition.x, _dragExtentMin))) break;
+				}
+
+				for (_dragExtentMax = _dragBlock.RootPosition.y + 1; _dragExtentMax <= BoundsMax.y; _dragExtentMax++)
+				{
+					if (!IsDropTargetClear(new Vector2Int(_dragBlock.RootPosition.x, _dragExtentMax))) break;
+				}
+
+				break;
+			default:
+				Debug.LogError(
+					$"ComputeDragExtents called with drag state {_dragState}. It should only be called when the direction of drag has been determined."
+				);
+				break;
 		}
 
-		_dragBlock.RootPosition = targetRootPosition;
+		_dragExtentMin++;
+		_dragExtentMax--;
 	}
 
 	private bool IsDropTargetClear(Vector2Int targetRootPosition)

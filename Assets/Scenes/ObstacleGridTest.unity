@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoundsMin: {x: -6, y: -3}
   BoundsMax: {x: 6, y: 3}
+  DragMoveTime: 0.05
 --- !u!1 &694579848
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +305,7 @@ MonoBehaviour:
   - {x: 1, y: 1}
   - {x: 0, y: 2}
   - {x: 1, y: 2}
-  MoveTime: 0.1
+  Draggable: 1
 --- !u!1 &1464836474
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,4 +523,4 @@ MonoBehaviour:
   - {x: 1, y: 1}
   - {x: 0, y: 2}
   - {x: 1, y: 2}
-  MoveTime: 0.1
+  Draggable: 1
