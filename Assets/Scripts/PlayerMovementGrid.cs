@@ -12,6 +12,9 @@ public struct PlayerToken
 	public Vector2Int Position;
 	public string HorizontalAxis;
 	public string VerticalAxis;
+	public TMP_Text MoveLimitDisplay;
+	[NonSerialized]
+	public int MoveCount;
 }
 
 [ExecuteInEditMode]
@@ -23,6 +26,7 @@ public class PlayerMovementGrid : MonoBehaviour
 	public AnimationCurve FailedMoveCurve;
 	public float MoveTime = 0.2f;
 	public float MoveCooldown = 0.05f;
+	public int MoveLimit = 10;
 	public PlayerToken[] Players;
 	public GameObject EndScreen;
 
@@ -39,6 +43,17 @@ public class PlayerMovementGrid : MonoBehaviour
 		_grid = GetComponent<GridEnvironment>();
 		_obstacleGrid = GetComponent<ObstacleGrid>();
 		AcceptInputs = true;
+	}
+
+	private void Start()
+	{
+		for (int i = 0; i < Players.Length; i++)
+		{
+			if (Players[i].MoveLimitDisplay != null)
+			{
+				Players[i].MoveLimitDisplay.text = MoveLimit.ToString();
+			}
+		}
 	}
 
 	private void Update()
@@ -65,6 +80,7 @@ public class PlayerMovementGrid : MonoBehaviour
 			for (int i = 0; i < Players.Length; i++)
 			{
 				if (_moveCoroutines[i] != null) continue;
+				if (Players[i].MoveCount >= MoveLimit) continue;
 
 				Vector2 move = new Vector2(
 					Input.GetAxisRaw(Players[i].HorizontalAxis), Input.GetAxisRaw(Players[i].VerticalAxis)
@@ -87,7 +103,14 @@ public class PlayerMovementGrid : MonoBehaviour
 					{
 						_moveCoroutines[i] =
 							StartCoroutine(MovePlayerVisual(i, Players[i].Position, target));
+
 						Players[i].Position = target;
+						Players[i].MoveCount++;
+
+						if (Players[i].MoveLimitDisplay != null)
+						{
+							Players[i].MoveLimitDisplay.text = (MoveLimit - Players[i].MoveCount).ToString();
+						}
 					}
 					else
 					{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum DragState
+public enum DragDirectionState
 {
 	Idle,
 	Indeterminate,
@@ -22,7 +22,7 @@ public class ObstacleGrid : MonoBehaviour
 	private PlayerMovementGrid _playerGrid;
 	private List<ObstacleBlock> _blocks;
 
-	private DragState _dragState;
+	private DragDirectionState _dragState;
 
 	private ObstacleBlock _dragBlock;
 	private Vector2 _dragMouseStart;
@@ -50,12 +50,12 @@ public class ObstacleGrid : MonoBehaviour
 				// Initialize drag
 				switch (hoverBlock.LockDragDirection)
 				{
-					case DragState.Idle:
-					case DragState.Indeterminate:
-						_dragState = DragState.Indeterminate;
+					case DragDirectionState.Idle:
+					case DragDirectionState.Indeterminate:
+						_dragState = DragDirectionState.Indeterminate;
 						break;
-					case DragState.Horizontal:
-					case DragState.Vertical:
+					case DragDirectionState.Horizontal:
+					case DragDirectionState.Vertical:
 						_dragState = hoverBlock.LockDragDirection;
 						break;
 					default:
@@ -77,30 +77,30 @@ public class ObstacleGrid : MonoBehaviour
 
 		if (Input.GetButtonUp("Fire1"))
 		{
-			_dragState = DragState.Idle;
+			_dragState = DragDirectionState.Idle;
 		}
 
 		Vector2 mouseOffset = mousePosition - _dragMouseStart;
 
 		switch (_dragState)
 		{
-			case DragState.Idle:
+			case DragDirectionState.Idle:
 				break;
-			case DragState.Indeterminate:
+			case DragDirectionState.Indeterminate:
 				if (Mathf.Abs(mouseOffset.x) - Mathf.Abs(mouseOffset.y) > DirectionThreshold)
 				{
-					_dragState = DragState.Horizontal;
-					goto case DragState.Horizontal;
+					_dragState = DragDirectionState.Horizontal;
+					goto case DragDirectionState.Horizontal;
 				}
 				else if (Mathf.Abs(mouseOffset.y) - Mathf.Abs(mouseOffset.x) > DirectionThreshold)
 				{
-					_dragState = DragState.Vertical;
-					goto case DragState.Vertical;
+					_dragState = DragDirectionState.Vertical;
+					goto case DragDirectionState.Vertical;
 				}
 
 				break;
-			case DragState.Horizontal:
-			case DragState.Vertical:
+			case DragDirectionState.Horizontal:
+			case DragDirectionState.Vertical:
 				ComputeDragExtents();
 				UseDragTarget(_dragRootStart + Vector2Int.RoundToInt(mouseOffset));
 				break;
@@ -120,12 +120,12 @@ public class ObstacleGrid : MonoBehaviour
 	{
 		switch (_dragState)
 		{
-			case DragState.Horizontal:
+			case DragDirectionState.Horizontal:
 				_dragBlock.RootPosition = new Vector2Int(
 					Mathf.Clamp(targetRoot.x, _dragExtentMin, _dragExtentMax), _dragBlock.RootPosition.y
 				);
 				break;
-			case DragState.Vertical:
+			case DragDirectionState.Vertical:
 				_dragBlock.RootPosition = new Vector2Int(
 					_dragBlock.RootPosition.x, Mathf.Clamp(targetRoot.y, _dragExtentMin, _dragExtentMax)
 				);
@@ -142,7 +142,7 @@ public class ObstacleGrid : MonoBehaviour
 	{
 		switch (_dragState)
 		{
-			case DragState.Horizontal:
+			case DragDirectionState.Horizontal:
 				for (_dragExtentMin = _dragBlock.RootPosition.x - 1;
 					_dragExtentMin >= _grid.BoundsMin.x;
 					_dragExtentMin--)
@@ -158,7 +158,7 @@ public class ObstacleGrid : MonoBehaviour
 				}
 
 				break;
-			case DragState.Vertical:
+			case DragDirectionState.Vertical:
 				for (_dragExtentMin = _dragBlock.RootPosition.y - 1;
 					_dragExtentMin >= _grid.BoundsMin.y;
 					_dragExtentMin--)
