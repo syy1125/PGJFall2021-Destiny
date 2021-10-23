@@ -328,6 +328,10 @@ PrefabInstance:
       value: Game Grid
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631074861467, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: TimeDisplay
+      value: 
+      objectReference: {fileID: 733547093}
+    - target: {fileID: 6551991631074861467, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: OnTimerEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 24418915}
