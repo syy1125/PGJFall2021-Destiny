@@ -26,6 +26,7 @@ public class ObstacleGrid : MonoBehaviour
 	private Vector2Int _dragHandle; // The mouse position relative to the block's root position.
 	private int _dragExtentMin;
 	private int _dragExtentMax;
+	private HashSet<Vector2Int> _blockedPositions;
 
 	private void Awake()
 	{
@@ -48,6 +49,13 @@ public class ObstacleGrid : MonoBehaviour
 				_dragBlock = hoverBlock;
 				_dragStart = mousePosition;
 				_dragHandle = mousePosition - hoverBlock.RootPosition;
+				_blockedPositions = new HashSet<Vector2Int>(
+					_blocks
+						.Where(block => block != _dragBlock)
+						.SelectMany(
+							block => block.BlockedPositions.Select(localPosition => block.RootPosition + localPosition)
+						)
+				);
 			}
 		}
 
@@ -167,20 +175,10 @@ public class ObstacleGrid : MonoBehaviour
 			            || position.x > BoundsMax.x
 			            || position.y < BoundsMin.y
 			            || position.y > BoundsMax.y
+			            || _blockedPositions.Contains(position)
 		))
 		{
 			return false;
-		}
-
-		foreach (ObstacleBlock otherBlock in _blocks.Where(block => block != _dragBlock))
-		{
-			if (otherBlock.BlockedPositions
-				.Select(localPosition => otherBlock.RootPosition + localPosition)
-				.Intersect(targetPositions)
-				.Any())
-			{
-				return false;
-			}
 		}
 
 		return true;
