@@ -15,6 +15,7 @@ public class ObstacleGrid : MonoBehaviour
 {
 	public Vector2Int BoundsMin;
 	public Vector2Int BoundsMax;
+	public float DirectionThreshold = 0.5f;
 	public float DragMoveTime = 0.1f;
 
 	private List<ObstacleBlock> _blocks;
@@ -22,8 +23,8 @@ public class ObstacleGrid : MonoBehaviour
 	private DragState _dragState;
 
 	private ObstacleBlock _dragBlock;
-	private Vector2Int _dragStart; // The mouse position where the drag started.
-	private Vector2Int _dragHandle; // The mouse position relative to the block's root position.
+	private Vector2 _dragMouseStart;
+	private Vector2Int _dragRootStart;
 	private int _dragExtentMin;
 	private int _dragExtentMax;
 	private HashSet<Vector2Int> _blockedPositions;
@@ -35,9 +36,8 @@ public class ObstacleGrid : MonoBehaviour
 
 	private void Update()
 	{
-		Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		Vector2Int mousePosition = Vector2Int.RoundToInt(transform.InverseTransformPoint(worldPosition));
-		ObstacleBlock hoverBlock = GetBlock(mousePosition);
+		Vector2 mousePosition = transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+		ObstacleBlock hoverBlock = GetBlock(Vector2Int.RoundToInt(mousePosition));
 
 		if (Input.GetButtonDown("Fire1"))
 		{
@@ -47,8 +47,8 @@ public class ObstacleGrid : MonoBehaviour
 				_dragState = DragState.Indeterminate;
 
 				_dragBlock = hoverBlock;
-				_dragStart = mousePosition;
-				_dragHandle = mousePosition - hoverBlock.RootPosition;
+				_dragMouseStart = mousePosition;
+				_dragRootStart = hoverBlock.RootPosition;
 				_blockedPositions = new HashSet<Vector2Int>(
 					_blocks
 						.Where(block => block != _dragBlock)
@@ -64,19 +64,19 @@ public class ObstacleGrid : MonoBehaviour
 			_dragState = DragState.Idle;
 		}
 
+		Vector2 mouseOffset = mousePosition - _dragMouseStart;
+
 		switch (_dragState)
 		{
 			case DragState.Idle:
 				break;
 			case DragState.Indeterminate:
-				Vector2Int delta = mousePosition - _dragStart;
-
-				if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+				if (Mathf.Abs(mouseOffset.x) - Mathf.Abs(mouseOffset.y) > DirectionThreshold)
 				{
 					_dragState = DragState.Horizontal;
 					goto case DragState.Horizontal;
 				}
-				else if (Mathf.Abs(delta.y) > Mathf.Abs(delta.x))
+				else if (Mathf.Abs(mouseOffset.y) - Mathf.Abs(mouseOffset.x) > DirectionThreshold)
 				{
 					_dragState = DragState.Vertical;
 					goto case DragState.Vertical;
@@ -86,7 +86,7 @@ public class ObstacleGrid : MonoBehaviour
 			case DragState.Horizontal:
 			case DragState.Vertical:
 				ComputeDragExtents();
-				UseDragTarget(mousePosition);
+				UseDragTarget(_dragRootStart + Vector2Int.RoundToInt(mouseOffset));
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
@@ -100,20 +100,18 @@ public class ObstacleGrid : MonoBehaviour
 		);
 	}
 
-	private void UseDragTarget(Vector2Int anchor)
+	private void UseDragTarget(Vector2Int targetRoot)
 	{
-		Vector2Int targetRootPosition = anchor - _dragHandle;
-
 		switch (_dragState)
 		{
 			case DragState.Horizontal:
 				_dragBlock.RootPosition = new Vector2Int(
-					Mathf.Clamp(targetRootPosition.x, _dragExtentMin, _dragExtentMax), _dragBlock.RootPosition.y
+					Mathf.Clamp(targetRoot.x, _dragExtentMin, _dragExtentMax), _dragBlock.RootPosition.y
 				);
 				break;
 			case DragState.Vertical:
 				_dragBlock.RootPosition = new Vector2Int(
-					_dragBlock.RootPosition.x, Mathf.Clamp(targetRootPosition.y, _dragExtentMin, _dragExtentMax)
+					_dragBlock.RootPosition.x, Mathf.Clamp(targetRoot.y, _dragExtentMin, _dragExtentMax)
 				);
 				break;
 			default:
@@ -184,7 +182,7 @@ public class ObstacleGrid : MonoBehaviour
 		return true;
 	}
 
-	private void OnDrawGizmosSelected()
+	private void OnDrawGizmos()
 	{
 		Gizmos.matrix = Matrix4x4.identity;
 		Gizmos.color = Color.red;
