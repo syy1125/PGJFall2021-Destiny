@@ -88,7 +88,7 @@ public class PlayerMovementGrid : MonoBehaviour
 			{
 				// Players overlap, end game
 				_acceptInputs = false;
-				EndScreen.SetActive(true);
+				StartCoroutine(ShowEndScreen());
 			}
 		}
 	}
@@ -122,5 +122,11 @@ public class PlayerMovementGrid : MonoBehaviour
 	public bool HasPlayerAt(Vector2Int position)
 	{
 		return Players.Any(player => player.Position == position);
+	}
+
+	private IEnumerator ShowEndScreen()
+	{
+		yield return new WaitUntil(() => _moveCoroutines.All(item => item == null));
+		EndScreen.SetActive(true);
 	}
 }
