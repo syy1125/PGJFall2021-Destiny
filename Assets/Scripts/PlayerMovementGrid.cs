@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public struct PlayerToken
@@ -27,14 +28,16 @@ public class PlayerMovementGrid : MonoBehaviour
 	private Coroutine[] _moveCoroutines;
 	private GridEnvironment _grid;
 	private ObstacleGrid _obstacleGrid;
-	private bool _acceptInputs;
+	public bool AcceptInputs { get; set; }
+
+	public UnityEvent OnVictory;
 
 	private void Awake()
 	{
 		_moveCoroutines = new Coroutine[Players.Length];
 		_grid = GetComponent<GridEnvironment>();
 		_obstacleGrid = GetComponent<ObstacleGrid>();
-		_acceptInputs = true;
+		AcceptInputs = true;
 	}
 
 	private void Update()
@@ -56,7 +59,7 @@ public class PlayerMovementGrid : MonoBehaviour
 			return;
 		}
 
-		if (_acceptInputs)
+		if (AcceptInputs)
 		{
 			for (int i = 0; i < Players.Length; i++)
 			{
@@ -87,8 +90,9 @@ public class PlayerMovementGrid : MonoBehaviour
 			if (Players.Select(player => player.Position).Distinct().Count() == 1)
 			{
 				// Players overlap, end game
-				_acceptInputs = false;
+				AcceptInputs = false;
 				StartCoroutine(ShowEndScreen());
+				OnVictory.Invoke();
 			}
 		}
 	}
