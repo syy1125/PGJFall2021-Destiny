@@ -47,11 +47,14 @@ public class PlayerMovementGrid : MonoBehaviour
 
 	private void Start()
 	{
-		for (int i = 0; i < Players.Length; i++)
+		if (Application.IsPlaying(gameObject))
 		{
-			if (Players[i].MoveLimitDisplay != null)
+			for (int i = 0; i < Players.Length; i++)
 			{
-				Players[i].MoveLimitDisplay.text = MoveLimit.ToString();
+				if (Players[i].MoveLimitDisplay != null)
+				{
+					Players[i].MoveLimitDisplay.text = MoveLimit.ToString();
+				}
 			}
 		}
 	}
