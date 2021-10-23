@@ -218,15 +218,18 @@ MonoBehaviour:
     m_RotationOrder: 4
   MoveTime: 0.2
   MoveCooldown: 0.1
+  MoveLimit: 10
   Players:
   - PlayerTransform: {fileID: 6551991630379237007}
     Position: {x: -5, y: 1}
     HorizontalAxis: Horizontal
     VerticalAxis: Vertical
+    MoveCountDisplay: {fileID: 0}
   - PlayerTransform: {fileID: 6551991631347042763}
     Position: {x: 6, y: 1}
     HorizontalAxis: Horizontal2
     VerticalAxis: Vertical2
+    MoveCountDisplay: {fileID: 0}
   EndScreen: {fileID: 0}
   OnVictory:
     m_PersistentCalls:
@@ -309,7 +312,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6551991631184522341}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6551991631074861471}
