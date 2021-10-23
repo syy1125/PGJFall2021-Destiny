@@ -48,7 +48,19 @@ public class ObstacleGrid : MonoBehaviour
 			if (hoverBlock != null && hoverBlock.Draggable)
 			{
 				// Initialize drag
-				_dragState = DragState.Indeterminate;
+				switch (hoverBlock.LockDragDirection)
+				{
+					case DragState.Idle:
+					case DragState.Indeterminate:
+						_dragState = DragState.Indeterminate;
+						break;
+					case DragState.Horizontal:
+					case DragState.Vertical:
+						_dragState = hoverBlock.LockDragDirection;
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
 
 				_dragBlock = hoverBlock;
 				_dragMouseStart = mousePosition;

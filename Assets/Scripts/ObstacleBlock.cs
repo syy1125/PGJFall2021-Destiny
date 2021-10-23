@@ -7,6 +7,7 @@ public class ObstacleBlock : MonoBehaviour
 	public Vector2Int RootPosition;
 	public List<Vector2Int> BlockedPositions = new List<Vector2Int>(new[] { Vector2Int.zero });
 	public bool Draggable = true;
+	public DragState LockDragDirection = DragState.Indeterminate;
 
 	private ObstacleGrid _grid;
 	private Vector3 _velocity;
