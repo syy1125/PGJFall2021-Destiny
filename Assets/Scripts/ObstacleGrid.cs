@@ -11,13 +11,15 @@ public enum DragState
 	Vertical
 }
 
+[RequireComponent(typeof(GridEnvironment))]
+[RequireComponent(typeof(PlayerMovementGrid))]
 public class ObstacleGrid : MonoBehaviour
 {
-	public Vector2Int BoundsMin;
-	public Vector2Int BoundsMax;
 	public float DirectionThreshold = 0.5f;
 	public float DragMoveTime = 0.1f;
 
+	private GridEnvironment _grid;
+	private PlayerMovementGrid _playerGrid;
 	private List<ObstacleBlock> _blocks;
 
 	private DragState _dragState;
@@ -31,13 +33,15 @@ public class ObstacleGrid : MonoBehaviour
 
 	private void Awake()
 	{
+		_grid = GetComponent<GridEnvironment>();
+		_playerGrid = GetComponent<PlayerMovementGrid>();
 		_blocks = GetComponentsInChildren<ObstacleBlock>().ToList();
 	}
 
 	private void Update()
 	{
 		Vector2 mousePosition = transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-		ObstacleBlock hoverBlock = GetBlock(Vector2Int.RoundToInt(mousePosition));
+		ObstacleBlock hoverBlock = GetBlockAt(Vector2Int.RoundToInt(mousePosition));
 
 		if (Input.GetButtonDown("Fire1"))
 		{
@@ -93,7 +97,7 @@ public class ObstacleGrid : MonoBehaviour
 		}
 	}
 
-	private ObstacleBlock GetBlock(Vector2Int position)
+	public ObstacleBlock GetBlockAt(Vector2Int position)
 	{
 		return _blocks.FirstOrDefault(
 			block => block.BlockedPositions.Any(blockedPosition => block.RootPosition + blockedPosition == position)
@@ -127,24 +131,32 @@ public class ObstacleGrid : MonoBehaviour
 		switch (_dragState)
 		{
 			case DragState.Horizontal:
-				for (_dragExtentMin = _dragBlock.RootPosition.x - 1; _dragExtentMin >= BoundsMin.x; _dragExtentMin--)
+				for (_dragExtentMin = _dragBlock.RootPosition.x - 1;
+					_dragExtentMin >= _grid.BoundsMin.x;
+					_dragExtentMin--)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragExtentMin, _dragBlock.RootPosition.y))) break;
 				}
 
-				for (_dragExtentMax = _dragBlock.RootPosition.x + 1; _dragExtentMax <= BoundsMax.x; _dragExtentMax++)
+				for (_dragExtentMax = _dragBlock.RootPosition.x + 1;
+					_dragExtentMax <= _grid.BoundsMax.x;
+					_dragExtentMax++)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragExtentMax, _dragBlock.RootPosition.y))) break;
 				}
 
 				break;
 			case DragState.Vertical:
-				for (_dragExtentMin = _dragBlock.RootPosition.y - 1; _dragExtentMin >= BoundsMin.y; _dragExtentMin--)
+				for (_dragExtentMin = _dragBlock.RootPosition.y - 1;
+					_dragExtentMin >= _grid.BoundsMin.y;
+					_dragExtentMin--)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragBlock.RootPosition.x, _dragExtentMin))) break;
 				}
 
-				for (_dragExtentMax = _dragBlock.RootPosition.y + 1; _dragExtentMax <= BoundsMax.y; _dragExtentMax++)
+				for (_dragExtentMax = _dragBlock.RootPosition.y + 1;
+					_dragExtentMax <= _grid.BoundsMax.y;
+					_dragExtentMax++)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragBlock.RootPosition.x, _dragExtentMax))) break;
 				}
@@ -169,26 +181,14 @@ public class ObstacleGrid : MonoBehaviour
 				.ToList();
 
 		if (targetPositions.Any(
-			position => position.x < BoundsMin.x
-			            || position.x > BoundsMax.x
-			            || position.y < BoundsMin.y
-			            || position.y > BoundsMax.y
+			position => !_grid.InBounds(position)
 			            || _blockedPositions.Contains(position)
+			            || _playerGrid.HasPlayerAt(position)
 		))
 		{
 			return false;
 		}
 
 		return true;
-	}
-
-	private void OnDrawGizmos()
-	{
-		Gizmos.matrix = Matrix4x4.identity;
-		Gizmos.color = Color.red;
-
-		Vector2 center = (Vector2) (BoundsMin + BoundsMax) / 2f;
-		Vector2 size = BoundsMax - BoundsMin + Vector2Int.one;
-		Gizmos.DrawWireCube(center, size);
 	}
 }
