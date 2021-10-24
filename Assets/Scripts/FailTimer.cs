@@ -29,6 +29,8 @@ public class FailTimer : MonoBehaviour
 
 	private void Update()
 	{
+		if (GameManager.Instance.State != GameState.Active) return;
+		
 		_remainingTime -= Time.deltaTime;
 		if (TimeDisplay != null)
 		{
