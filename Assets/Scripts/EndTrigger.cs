@@ -3,6 +3,7 @@ using UnityEngine;
 public class EndTrigger : MonoBehaviour
 {
 	public GameObject Endscrn;
+	public AudioSource winDing;
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
@@ -10,6 +11,7 @@ public class EndTrigger : MonoBehaviour
 		{
 			Debug.Log("Collided");
 			Endscrn.gameObject.SetActive(true);
+			winDing.Play();
 		}
 	}
 }
