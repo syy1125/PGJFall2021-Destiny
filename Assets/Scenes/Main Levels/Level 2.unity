@@ -540,8 +540,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 741873683}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.9916, y: 2.5178, z: 0}
-  m_LocalScale: {x: 0.96317995, y: 7.797429, z: 1}
+  m_LocalPosition: {x: 3.9916, y: 3.5005, z: 0}
+  m_LocalScale: {x: 0.96317995, y: 5.8317895, z: 1}
   m_Children: []
   m_Father: {fileID: 1797626555}
   m_RootOrder: 0
@@ -1741,8 +1741,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639025136}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.9219, y: 1.9668, z: 0}
-  m_LocalScale: {x: 3.0213487, y: 0.9977514, z: 1}
+  m_LocalPosition: {x: -0.9219, y: 1.4141, z: 0}
+  m_LocalScale: {x: 4.12686, y: 0.9977514, z: 1}
   m_Children: []
   m_Father: {fileID: 1059738511}
   m_RootOrder: 11
@@ -2116,10 +2116,8 @@ MonoBehaviour:
   - {x: 4, y: 5}
   - {x: 4, y: 6}
   - {x: 4, y: 1}
-  - {x: 4, y: 0}
-  - {x: 4, y: -1}
   Draggable: 1
-  LockDragDirection: 1
+  LockDragDirection: 3
 --- !u!114 &1865466338 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1249018744225000735, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
