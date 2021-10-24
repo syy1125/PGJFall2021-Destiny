@@ -5219,7 +5219,7 @@ PrefabInstance:
       objectReference: {fileID: 333178209}
     - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: MoveLimit
-      value: 25
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: Players.Array.data[0].Position.x
