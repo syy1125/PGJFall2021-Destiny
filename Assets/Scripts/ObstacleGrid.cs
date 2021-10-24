@@ -202,18 +202,25 @@ public class ObstacleGrid : MonoBehaviour
 
 	private void ComputeDragExtents()
 	{
+		Vector2Int min = new Vector2Int(
+			_dragBlock.BlockedPositions.Min(pos => pos.x), _dragBlock.BlockedPositions.Min(pos => pos.y)
+		);
+		Vector2Int max = new Vector2Int(
+			_dragBlock.BlockedPositions.Max(pos => pos.x), _dragBlock.BlockedPositions.Max(pos => pos.y)
+		);
+
 		switch (_dragState)
 		{
 			case DragDirectionState.Horizontal:
 				for (_dragExtentMin = _dragBlock.RootPosition.x - 1;
-					_dragExtentMin >= _grid.BoundsMin.x;
+					_dragExtentMin >= _grid.BoundsMin.x - min.x;
 					_dragExtentMin--)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragExtentMin, _dragBlock.RootPosition.y))) break;
 				}
 
 				for (_dragExtentMax = _dragBlock.RootPosition.x + 1;
-					_dragExtentMax <= _grid.BoundsMax.x;
+					_dragExtentMax <= _grid.BoundsMax.x - max.x;
 					_dragExtentMax++)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragExtentMax, _dragBlock.RootPosition.y))) break;
@@ -222,14 +229,14 @@ public class ObstacleGrid : MonoBehaviour
 				break;
 			case DragDirectionState.Vertical:
 				for (_dragExtentMin = _dragBlock.RootPosition.y - 1;
-					_dragExtentMin >= _grid.BoundsMin.y;
+					_dragExtentMin >= _grid.BoundsMin.y - min.y;
 					_dragExtentMin--)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragBlock.RootPosition.x, _dragExtentMin))) break;
 				}
 
 				for (_dragExtentMax = _dragBlock.RootPosition.y + 1;
-					_dragExtentMax <= _grid.BoundsMax.y;
+					_dragExtentMax <= _grid.BoundsMax.y - max.y;
 					_dragExtentMax++)
 				{
 					if (!IsDropTargetClear(new Vector2Int(_dragBlock.RootPosition.x, _dragExtentMax))) break;
