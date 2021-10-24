@@ -17,6 +17,12 @@ public class ObstacleGrid : MonoBehaviour
 {
 	public float DirectionThreshold = 0.5f;
 	public float DragMoveTime = 0.1f;
+	public GameObject DragPreviewIndicator;
+	public GameObject DragMouseIndicator;
+	public GameObject DragVerticalIndicator;
+	public GameObject DragHorizontalIndicator;
+
+	public bool AllowDrag { get; set; }
 
 	private GridEnvironment _grid;
 	private PlayerMovementGrid _playerGrid;
@@ -36,6 +42,7 @@ public class ObstacleGrid : MonoBehaviour
 		_grid = GetComponent<GridEnvironment>();
 		_playerGrid = GetComponent<PlayerMovementGrid>();
 		_blocks = GetComponentsInChildren<ObstacleBlock>().ToList();
+		AllowDrag = true;
 	}
 
 	private void Update()
@@ -43,7 +50,7 @@ public class ObstacleGrid : MonoBehaviour
 		Vector2 mousePosition = transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 		ObstacleBlock hoverBlock = GetBlockAt(Vector2Int.RoundToInt(mousePosition));
 
-		if (Input.GetButtonDown("Fire1"))
+		if (AllowDrag && Input.GetButtonDown("Fire1"))
 		{
 			if (hoverBlock != null && hoverBlock.Draggable)
 			{
@@ -75,7 +82,7 @@ public class ObstacleGrid : MonoBehaviour
 			}
 		}
 
-		if (Input.GetButtonUp("Fire1"))
+		if (!AllowDrag || Input.GetButtonUp("Fire1"))
 		{
 			_dragState = DragDirectionState.Idle;
 		}
@@ -103,6 +110,61 @@ public class ObstacleGrid : MonoBehaviour
 			case DragDirectionState.Vertical:
 				ComputeDragExtents();
 				UseDragTarget(_dragRootStart + Vector2Int.RoundToInt(mouseOffset));
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+	}
+
+	private void LateUpdate()
+	{
+		if (DragPreviewIndicator == null
+		    || DragMouseIndicator == null
+		    || DragHorizontalIndicator == null
+		    || DragVerticalIndicator == null) return;
+		Vector3 previewPosition = transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+		previewPosition.z = -1f;
+		ObstacleBlock hoverBlock = GetBlockAt(Vector2Int.RoundToInt(previewPosition));
+
+		DragPreviewIndicator.transform.localPosition = previewPosition;
+		DragMouseIndicator.transform.localPosition = previewPosition;
+
+		switch (_dragState)
+		{
+			case DragDirectionState.Idle:
+				if (AllowDrag && hoverBlock != null && hoverBlock.Draggable)
+				{
+					Cursor.visible = false;
+					DragPreviewIndicator.SetActive(true);
+				}
+				else
+				{
+					Cursor.visible = true;
+					DragPreviewIndicator.SetActive(false);
+				}
+
+				DragMouseIndicator.SetActive(false);
+				break;
+			case DragDirectionState.Indeterminate:
+				Cursor.visible = false;
+				DragPreviewIndicator.SetActive(false);
+				DragMouseIndicator.SetActive(true);
+				DragHorizontalIndicator.SetActive(true);
+				DragVerticalIndicator.SetActive(true);
+				break;
+			case DragDirectionState.Horizontal:
+				Cursor.visible = false;
+				DragPreviewIndicator.SetActive(false);
+				DragMouseIndicator.SetActive(true);
+				DragHorizontalIndicator.SetActive(true);
+				DragVerticalIndicator.SetActive(false);
+				break;
+			case DragDirectionState.Vertical:
+				Cursor.visible = false;
+				DragPreviewIndicator.SetActive(false);
+				DragMouseIndicator.SetActive(true);
+				DragHorizontalIndicator.SetActive(false);
+				DragVerticalIndicator.SetActive(true);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
