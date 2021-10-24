@@ -58,7 +58,7 @@ public class MainMenuAnimation : MonoBehaviour
 		Vector3 localPosition = new Vector3(
 			Mathf.Lerp(min.x, max.x, Random.value), Mathf.Lerp(min.y, max.y, Random.value)
 		);
-		localPosition.z = -localPosition.y / RockSpawnArea.size.y;
+		localPosition.z = localPosition.y / RockSpawnArea.size.y;
 		rock.transform.localPosition = localPosition;
 
 		rock.GetComponent<Rigidbody2D>().velocity = Vector2.right * Random.Range(RockMinSpeed, RockMaxSpeed);
