@@ -126,6 +126,8 @@ public class PlayerMovementGrid : MonoBehaviour
 			{
 				// Players overlap, end game
 				AcceptInputs = false;
+				_obstacleGrid.AllowDrag = false;
+
 				StartCoroutine(ShowEndScreen());
 				OnVictory.Invoke();
 			}
