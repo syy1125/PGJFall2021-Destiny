@@ -5104,11 +5104,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: Players.Array.data[1].Position.x
-      value: -7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: Players.Array.data[1].Position.y
-      value: -2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631074861469, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: BoundsMax.x
@@ -5180,11 +5180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631347042763, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631347042763, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
