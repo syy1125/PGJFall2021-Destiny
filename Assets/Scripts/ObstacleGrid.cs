@@ -84,6 +84,14 @@ public class ObstacleGrid : MonoBehaviour
 
 		if (GameManager.Instance.State != GameState.Active || Input.GetButtonUp("Fire1"))
 		{
+			if (!moveSFX.isPlaying)
+			{
+				if (_dragState == DragDirectionState.Horizontal || _dragState == DragDirectionState.Vertical)
+				{
+					moveSFX.Play();
+				}
+			}
+
 			_dragState = DragDirectionState.Idle;
 		}
 
@@ -96,13 +104,11 @@ public class ObstacleGrid : MonoBehaviour
 			case DragDirectionState.Indeterminate:
 				if (Mathf.Abs(mouseOffset.x) - Mathf.Abs(mouseOffset.y) > DirectionThreshold)
 				{
-					moveSFX.Play();
 					_dragState = DragDirectionState.Horizontal;
 					goto case DragDirectionState.Horizontal;
 				}
 				else if (Mathf.Abs(mouseOffset.y) - Mathf.Abs(mouseOffset.x) > DirectionThreshold)
 				{
-					moveSFX.Play();
 					_dragState = DragDirectionState.Vertical;
 					goto case DragDirectionState.Vertical;
 				}
@@ -110,7 +116,6 @@ public class ObstacleGrid : MonoBehaviour
 				break;
 			case DragDirectionState.Horizontal:
 			case DragDirectionState.Vertical:
-				moveSFX.Play();
 				ComputeDragExtents();
 				UseDragTarget(_dragRootStart + Vector2Int.RoundToInt(mouseOffset));
 				break;
