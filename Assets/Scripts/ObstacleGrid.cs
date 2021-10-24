@@ -126,8 +126,8 @@ public class ObstacleGrid : MonoBehaviour
 		previewPosition.z = -1f;
 		ObstacleBlock hoverBlock = GetBlockAt(Vector2Int.RoundToInt(previewPosition));
 
-		DragPreviewIndicator.transform.position = previewPosition;
-		DragMouseIndicator.transform.position = previewPosition;
+		DragPreviewIndicator.transform.localPosition = previewPosition;
+		DragMouseIndicator.transform.localPosition = previewPosition;
 
 		switch (_dragState)
 		{
