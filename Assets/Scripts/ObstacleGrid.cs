@@ -23,6 +23,7 @@ public class ObstacleGrid : MonoBehaviour
 	public GameObject DragMouseIndicator;
 	public GameObject DragVerticalIndicator;
 	public GameObject DragHorizontalIndicator;
+	public AudioSource moveSFX;
 
 	private GridEnvironment _grid;
 	private PlayerMovementGrid _playerGrid;
@@ -95,11 +96,13 @@ public class ObstacleGrid : MonoBehaviour
 			case DragDirectionState.Indeterminate:
 				if (Mathf.Abs(mouseOffset.x) - Mathf.Abs(mouseOffset.y) > DirectionThreshold)
 				{
+					moveSFX.Play();
 					_dragState = DragDirectionState.Horizontal;
 					goto case DragDirectionState.Horizontal;
 				}
 				else if (Mathf.Abs(mouseOffset.y) - Mathf.Abs(mouseOffset.x) > DirectionThreshold)
 				{
+					moveSFX.Play();
 					_dragState = DragDirectionState.Vertical;
 					goto case DragDirectionState.Vertical;
 				}
@@ -107,6 +110,7 @@ public class ObstacleGrid : MonoBehaviour
 				break;
 			case DragDirectionState.Horizontal:
 			case DragDirectionState.Vertical:
+				moveSFX.Play();
 				ComputeDragExtents();
 				UseDragTarget(_dragRootStart + Vector2Int.RoundToInt(mouseOffset));
 				break;
