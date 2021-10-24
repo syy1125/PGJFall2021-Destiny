@@ -4430,6 +4430,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792819420}
     m_Modifications:
+    - target: {fileID: 1594414954438951325, guid: caf32d4f191c8534faf2457e4b79eda4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1792819424}
+    - target: {fileID: 1594414954438951325, guid: caf32d4f191c8534faf2457e4b79eda4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: retryGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594414954438951325, guid: caf32d4f191c8534faf2457e4b79eda4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594414955980222361, guid: caf32d4f191c8534faf2457e4b79eda4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1792819424}
+    - target: {fileID: 1594414955980222361, guid: caf32d4f191c8534faf2457e4b79eda4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: mainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594414955980222361, guid: caf32d4f191c8534faf2457e4b79eda4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1594414956074560085, guid: caf32d4f191c8534faf2457e4b79eda4, type: 3}
       propertyPath: m_Name
       value: Pause Menu
