@@ -18,6 +18,8 @@ public class ObstacleGrid : MonoBehaviour
 	public float DirectionThreshold = 0.5f;
 	public float DragMoveTime = 0.1f;
 	public GameObject DragPreviewIndicator;
+	public GameObject DragPreviewVerticalIndicator;
+	public GameObject DragPreviewHorizontalIndicator;
 	public GameObject DragMouseIndicator;
 	public GameObject DragVerticalIndicator;
 	public GameObject DragHorizontalIndicator;
@@ -118,10 +120,7 @@ public class ObstacleGrid : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (DragPreviewIndicator == null
-		    || DragMouseIndicator == null
-		    || DragHorizontalIndicator == null
-		    || DragVerticalIndicator == null) return;
+		if (DragPreviewIndicator == null || DragMouseIndicator == null) return;
 		Vector3 previewPosition = transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 		previewPosition.z = -1f;
 		ObstacleBlock hoverBlock = GetBlockAt(Vector2Int.RoundToInt(previewPosition));
@@ -136,6 +135,12 @@ public class ObstacleGrid : MonoBehaviour
 				{
 					Cursor.visible = false;
 					DragPreviewIndicator.SetActive(true);
+					DragPreviewVerticalIndicator.SetActive(
+						hoverBlock.LockDragDirection != DragDirectionState.Horizontal
+					);
+					DragPreviewHorizontalIndicator.SetActive(
+						hoverBlock.LockDragDirection != DragDirectionState.Vertical
+					);
 				}
 				else
 				{
