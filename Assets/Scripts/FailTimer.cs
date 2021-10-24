@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class FailTimer : MonoBehaviour
@@ -8,7 +9,8 @@ public class FailTimer : MonoBehaviour
 	public float Delay;
 	private float _remainingTime;
 
-	public TMP_Text TimeDisplay;
+	public GameObject TimeDisplay;
+	public TMP_Text TimeDisplayText;
 	public Image TimeChart;
 
 	private void OnEnable()
@@ -22,12 +24,7 @@ public class FailTimer : MonoBehaviour
 		{
 			if (TimeDisplay != null)
 			{
-				TimeDisplay.gameObject.SetActive(false);
-			}
-
-			if (TimeChart != null)
-			{
-				TimeChart.gameObject.SetActive(false);
+				TimeDisplay.SetActive(false);
 			}
 
 			enabled = false;
@@ -39,9 +36,9 @@ public class FailTimer : MonoBehaviour
 		if (GameManager.Instance.State != GameState.Active) return;
 
 		_remainingTime -= Time.deltaTime;
-		if (TimeDisplay != null)
+		if (TimeDisplayText != null)
 		{
-			TimeDisplay.text = Mathf.Max(_remainingTime, 0f).ToString("0.000");
+			TimeDisplayText.text = Mathf.Max(_remainingTime, 0f).ToString("0.000");
 		}
 
 		if (TimeChart != null)

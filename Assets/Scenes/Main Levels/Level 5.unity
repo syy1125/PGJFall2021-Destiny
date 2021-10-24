@@ -3958,6 +3958,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &870033791 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8943186155721014044, guid: 70ef89bbae91ee34dbce548b96d53939, type: 3}
+  m_PrefabInstance: {fileID: 870033787}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &871952403
 GameObject:
   m_ObjectHideFlags: 0
@@ -7783,6 +7788,10 @@ PrefabInstance:
       objectReference: {fileID: 870033789}
     - target: {fileID: 6551991631074861467, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: TimeDisplay
+      value: 
+      objectReference: {fileID: 870033791}
+    - target: {fileID: 6551991631074861467, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: TimeDisplayText
       value: 
       objectReference: {fileID: 870033790}
     - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
