@@ -4,7 +4,8 @@ using UnityEngine;
 public class MainMenuAnimation : MonoBehaviour
 {
 	public GameObject RockPrefab;
-	public float RockSpeed;
+	public float RockMinSpeed;
+	public float RockMaxSpeed;
 	public BoxCollider2D RockSpawnArea;
 	public float SpawnRate;
 
@@ -15,6 +16,11 @@ public class MainMenuAnimation : MonoBehaviour
 	{
 		_rocks = new List<GameObject>();
 		_disabledRockPool = new Queue<GameObject>();
+	}
+
+	private void Start()
+	{
+		SpawnRock();
 	}
 
 	private void Update()
@@ -49,10 +55,13 @@ public class MainMenuAnimation : MonoBehaviour
 
 		Vector2 min = RockSpawnArea.offset - RockSpawnArea.size / 2f;
 		Vector2 max = RockSpawnArea.offset + RockSpawnArea.size / 2f;
-		rock.transform.localPosition = new Vector3(
+		Vector3 localPosition = new Vector3(
 			Mathf.Lerp(min.x, max.x, Random.value), Mathf.Lerp(min.y, max.y, Random.value)
 		);
-		rock.GetComponent<Rigidbody2D>().velocity = Vector2.right * RockSpeed;
+		localPosition.z = -localPosition.y / RockSpawnArea.size.y;
+		rock.transform.localPosition = localPosition;
+
+		rock.GetComponent<Rigidbody2D>().velocity = Vector2.right * Random.Range(RockMinSpeed, RockMaxSpeed);
 
 		rock.SetActive(true);
 	}
