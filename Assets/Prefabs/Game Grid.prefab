@@ -1279,49 +1279,6 @@ MonoBehaviour:
     HorizontalAxis: Horizontal2
     VerticalAxis: Vertical2
     MoveLimitDisplay: {fileID: 8607375197084687549}
-  EndScreen: {fileID: 0}
-  OnVictory:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6551991631074861467}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnOutOfMoves:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6551991631074861470}
-        m_TargetAssemblyTypeName: ObstacleGrid, Assembly-CSharp
-        m_MethodName: set_AllowDrag
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ObstacleGrid, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &6551991631074861467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1335,46 +1292,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Delay: 10
-  OnTimerEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6551991631074861468}
-        m_TargetAssemblyTypeName: PlayerMovementGrid, Assembly-CSharp
-        m_MethodName: set_AcceptInputs
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 6551991631074861470}
-        m_TargetAssemblyTypeName: ObstacleGrid, Assembly-CSharp
-        m_MethodName: set_AllowDrag
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   TimeDisplay: {fileID: 0}
+  TimeDisplayText: {fileID: 0}
+  TimeChart: {fileID: 0}
 --- !u!1 &6551991631184522341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,6 +1387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6551991631347042763}
   - component: {fileID: 6551991631347042762}
+  - component: {fileID: 5892780096300294638}
   m_Layer: 0
   m_Name: char2
   m_TagString: Untagged
@@ -1540,6 +1461,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5892780096300294638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551991631347042764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddd519d4b684a90b07c4a6306909e3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AltSprite: {fileID: 21300000, guid: e5da48e7b4656644ab6de437609fef9f, type: 3}
 --- !u!1 &6820365358209492311
 GameObject:
   m_ObjectHideFlags: 0
