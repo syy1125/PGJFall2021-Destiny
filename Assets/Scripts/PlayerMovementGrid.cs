@@ -37,6 +37,7 @@ public class PlayerMovementGrid : MonoBehaviour
 	public bool AcceptInputs { get; set; }
 
 	public UnityEvent OnVictory;
+	public UnityEvent OnOutOfMoves;
 
 	private void Awake()
 	{
@@ -139,6 +140,12 @@ public class PlayerMovementGrid : MonoBehaviour
 
 				StartCoroutine(ShowEndScreen());
 				OnVictory.Invoke();
+			}
+
+			if (_useMoveLimit && Players.All(player => player.MoveCount >= MoveLimit))
+			{
+				// All player moves exhausted, end game
+				OnOutOfMoves.Invoke();
 			}
 		}
 	}

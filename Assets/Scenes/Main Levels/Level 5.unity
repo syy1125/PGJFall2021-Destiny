@@ -2015,6 +2015,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2164666645015136035, guid: 4534c7d5f5d75c74cbe95f4e1743ea7c, type: 3}
   m_PrefabInstance: {fileID: 462278860}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &462278862 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2164666645015136028, guid: 4534c7d5f5d75c74cbe95f4e1743ea7c, type: 3}
+  m_PrefabInstance: {fileID: 462278860}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &470190689
 GameObject:
   m_ObjectHideFlags: 0
@@ -7733,6 +7738,30 @@ PrefabInstance:
     - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: Players.Array.data[1].Position.y
       value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: OnOutOfMoves.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: OnOutOfMoves.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 462278862}
+    - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: OnOutOfMoves.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: OnOutOfMoves.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: OnOutOfMoves.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551991631074861468, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
+      propertyPath: OnOutOfMoves.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6551991631074861469, guid: 2391b0f1306888a49b4f3b8a0f3e99b5, type: 3}
       propertyPath: BoundsMax.x
