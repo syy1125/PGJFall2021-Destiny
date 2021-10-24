@@ -28,16 +28,11 @@ public class PlayerMovementGrid : MonoBehaviour
 	public float MoveCooldown = 0.05f;
 	public int MoveLimit = 10;
 	public PlayerToken[] Players;
-	public GameObject EndScreen;
 
 	private Coroutine[] _moveCoroutines;
 	private GridEnvironment _grid;
 	private ObstacleGrid _obstacleGrid;
 	private bool _useMoveLimit;
-	public bool AcceptInputs { get; set; }
-
-	public UnityEvent OnVictory;
-	public UnityEvent OnOutOfMoves;
 
 	private void Awake()
 	{
@@ -45,7 +40,6 @@ public class PlayerMovementGrid : MonoBehaviour
 		_grid = GetComponent<GridEnvironment>();
 		_obstacleGrid = GetComponent<ObstacleGrid>();
 		_useMoveLimit = PlayerPrefs.GetInt("UseMoveLimit", 0) == 1;
-		AcceptInputs = true;
 	}
 
 	private void Start()
@@ -88,7 +82,7 @@ public class PlayerMovementGrid : MonoBehaviour
 			return;
 		}
 
-		if (AcceptInputs)
+		if (GameManager.Instance.State == GameState.Active)
 		{
 			for (int i = 0; i < Players.Length; i++)
 			{
@@ -135,17 +129,13 @@ public class PlayerMovementGrid : MonoBehaviour
 			if (Players.Select(player => player.Position).Distinct().Count() == 1)
 			{
 				// Players overlap, end game
-				AcceptInputs = false;
-				_obstacleGrid.AllowDrag = false;
-
-				StartCoroutine(ShowEndScreen());
-				OnVictory.Invoke();
+				GameManager.Instance.State = GameState.Success;
 			}
 
 			if (_useMoveLimit && Players.All(player => player.MoveCount >= MoveLimit))
 			{
-				// All player moves exhausted, end game
-				OnOutOfMoves.Invoke();
+				// All player moves exhausted, game fails
+				GameManager.Instance.State = GameState.Failure;
 			}
 		}
 	}
@@ -200,11 +190,5 @@ public class PlayerMovementGrid : MonoBehaviour
 	public bool HasPlayerAt(Vector2Int position)
 	{
 		return Players.Any(player => player.Position == position);
-	}
-
-	private IEnumerator ShowEndScreen()
-	{
-		yield return new WaitUntil(() => _moveCoroutines.All(item => item == null));
-		EndScreen.SetActive(true);
 	}
 }

@@ -24,8 +24,6 @@ public class ObstacleGrid : MonoBehaviour
 	public GameObject DragVerticalIndicator;
 	public GameObject DragHorizontalIndicator;
 
-	public bool AllowDrag { get; set; }
-
 	private GridEnvironment _grid;
 	private PlayerMovementGrid _playerGrid;
 	private List<ObstacleBlock> _blocks;
@@ -44,7 +42,6 @@ public class ObstacleGrid : MonoBehaviour
 		_grid = GetComponent<GridEnvironment>();
 		_playerGrid = GetComponent<PlayerMovementGrid>();
 		_blocks = GetComponentsInChildren<ObstacleBlock>().ToList();
-		AllowDrag = true;
 	}
 
 	private void Update()
@@ -52,7 +49,7 @@ public class ObstacleGrid : MonoBehaviour
 		Vector2 mousePosition = transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 		ObstacleBlock hoverBlock = GetBlockAt(Vector2Int.RoundToInt(mousePosition));
 
-		if (AllowDrag && Input.GetButtonDown("Fire1"))
+		if (GameManager.Instance.State == GameState.Active && Input.GetButtonDown("Fire1"))
 		{
 			if (hoverBlock != null && hoverBlock.Draggable)
 			{
@@ -84,7 +81,7 @@ public class ObstacleGrid : MonoBehaviour
 			}
 		}
 
-		if (!AllowDrag || Input.GetButtonUp("Fire1"))
+		if (GameManager.Instance.State != GameState.Active || Input.GetButtonUp("Fire1"))
 		{
 			_dragState = DragDirectionState.Idle;
 		}
@@ -131,7 +128,7 @@ public class ObstacleGrid : MonoBehaviour
 		switch (_dragState)
 		{
 			case DragDirectionState.Idle:
-				if (AllowDrag && hoverBlock != null && hoverBlock.Draggable)
+				if (GameManager.Instance.State == GameState.Active && hoverBlock != null && hoverBlock.Draggable)
 				{
 					Cursor.visible = false;
 					DragPreviewIndicator.SetActive(true);

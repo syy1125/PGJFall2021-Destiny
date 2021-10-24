@@ -2,11 +2,10 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Timer : MonoBehaviour
+public class FailTimer : MonoBehaviour
 {
 	public float Delay;
 	private float _remainingTime;
-	public UnityEvent OnTimerEnd;
 
 	public TMP_Text TimeDisplay;
 
@@ -39,7 +38,7 @@ public class Timer : MonoBehaviour
 		if (_remainingTime <= 0)
 		{
 			enabled = false;
-			OnTimerEnd.Invoke();
+			GameManager.Instance.State = GameState.Failure;
 		}
 	}
 }
