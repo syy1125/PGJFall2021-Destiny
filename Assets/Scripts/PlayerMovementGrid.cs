@@ -3,7 +3,6 @@ using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 [Serializable]
 public struct PlayerToken
