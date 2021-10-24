@@ -1265,8 +1265,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  MoveTime: 0.2
-  MoveCooldown: 0.1
+  MoveTime: 0.15
+  MoveCooldown: 0.05
   MoveLimit: 10
   Players:
   - PlayerTransform: {fileID: 6551991630379237007}

@@ -15,6 +15,19 @@ public class Timer : MonoBehaviour
 		_remainingTime = Delay;
 	}
 
+	private void Start()
+	{
+		if (PlayerPrefs.GetInt("UseTimer", 0) != 1)
+		{
+			if (TimeDisplay != null)
+			{
+				TimeDisplay.gameObject.SetActive(false);
+			}
+
+			enabled = false;
+		}
+	}
+
 	private void Update()
 	{
 		_remainingTime -= Time.deltaTime;

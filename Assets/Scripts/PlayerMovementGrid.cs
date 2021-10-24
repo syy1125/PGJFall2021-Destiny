@@ -33,6 +33,7 @@ public class PlayerMovementGrid : MonoBehaviour
 	private Coroutine[] _moveCoroutines;
 	private GridEnvironment _grid;
 	private ObstacleGrid _obstacleGrid;
+	private bool _useMoveLimit;
 	public bool AcceptInputs { get; set; }
 
 	public UnityEvent OnVictory;
@@ -42,6 +43,7 @@ public class PlayerMovementGrid : MonoBehaviour
 		_moveCoroutines = new Coroutine[Players.Length];
 		_grid = GetComponent<GridEnvironment>();
 		_obstacleGrid = GetComponent<ObstacleGrid>();
+		_useMoveLimit = PlayerPrefs.GetInt("UseMoveLimit", 0) == 1;
 		AcceptInputs = true;
 	}
 
@@ -53,7 +55,14 @@ public class PlayerMovementGrid : MonoBehaviour
 			{
 				if (Players[i].MoveLimitDisplay != null)
 				{
-					Players[i].MoveLimitDisplay.text = MoveLimit.ToString();
+					if (_useMoveLimit)
+					{
+						Players[i].MoveLimitDisplay.text = MoveLimit.ToString();
+					}
+					else
+					{
+						Players[i].MoveLimitDisplay.gameObject.SetActive(false);
+					}
 				}
 			}
 		}
@@ -83,7 +92,7 @@ public class PlayerMovementGrid : MonoBehaviour
 			for (int i = 0; i < Players.Length; i++)
 			{
 				if (_moveCoroutines[i] != null) continue;
-				if (Players[i].MoveCount >= MoveLimit) continue;
+				if (_useMoveLimit && Players[i].MoveCount >= MoveLimit) continue;
 
 				Vector2 move = new Vector2(
 					Input.GetAxisRaw(Players[i].HorizontalAxis), Input.GetAxisRaw(Players[i].VerticalAxis)
