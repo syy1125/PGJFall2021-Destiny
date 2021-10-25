@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance { get; private set; }
 
 	private GameState _state;
+	public AudioSource winDing;
 
 	public GameState State
 	{
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 			{
 				case GameState.Success:
 					OnSuccess.Invoke();
+					winDing.Play();
 					break;
 				case GameState.Failure:
 					OnFailure.Invoke();
