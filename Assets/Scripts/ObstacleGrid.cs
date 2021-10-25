@@ -84,7 +84,7 @@ public class ObstacleGrid : MonoBehaviour
 
 		if (GameManager.Instance.State != GameState.Active || Input.GetButtonUp("Fire1"))
 		{
-			if (!moveSFX.isPlaying)
+			if (moveSFX != null && !moveSFX.isPlaying)
 			{
 				if (_dragState == DragDirectionState.Horizontal || _dragState == DragDirectionState.Vertical)
 				{
