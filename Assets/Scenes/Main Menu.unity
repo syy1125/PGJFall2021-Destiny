@@ -2542,6 +2542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonPrefab: {fileID: 5358653996835168056, guid: a9bef41d961c876479abed30bf3c1abb, type: 3}
   LevelNames:
+  - Level 0
   - Level 1
   - Level 2
   - Level 3
